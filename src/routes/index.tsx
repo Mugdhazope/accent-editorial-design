@@ -277,7 +277,6 @@ function AboutPage() {
           <img src={plevidLogo} alt="PLEVID" className="h-5 md:h-6 w-auto" />
           <nav className="hidden md:flex items-center gap-8 text-[13px] text-foreground/85">
             <a href="#about">about us</a>
-            <a href="#works">works</a>
             <a href="#process">process</a>
             <a href="#why">why plevid</a>
             <a href="#contact">contact us</a>
