@@ -372,25 +372,26 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="px-6 py-48 flex flex-col items-center justify-center text-center">
+      <section className="px-6 py-28 md:py-48 flex flex-col items-center justify-center text-center">
         <Reveal y={24}>
           <h2
             className="font-sans font-black lowercase leading-[0.88] tracking-[-0.045em]"
-            style={{ fontSize: "clamp(64px, 13vw, 220px)" }}
+            style={{ fontSize: "clamp(52px, 13vw, 220px)" }}
           >
             we don't<br />sell lights.
           </h2>
         </Reveal>
         <Reveal y={24}>
           <h2
-            className="mt-8 font-sans font-black lowercase leading-[0.88] tracking-[-0.045em] text-foreground/70"
-            style={{ fontSize: "clamp(64px, 13vw, 220px)" }}
+            className="mt-6 md:mt-8 font-sans font-black lowercase leading-[0.88] tracking-[-0.045em] text-foreground/70"
+            style={{ fontSize: "clamp(52px, 13vw, 220px)" }}
           >
             we shape<br />
             <span className="text-accent">experiences.</span>
           </h2>
         </Reveal>
       </section>
+
 
       <footer id="contact" className="border-t border-foreground/15 px-6 md:px-10 pt-20 pb-10">
         <div className="max-w-[1400px] mx-auto">
