@@ -277,7 +277,6 @@ function AboutPage() {
           <img src={plevidLogo} alt="PLEVID" className="h-5 md:h-6 w-auto" />
           <nav className="hidden md:flex items-center gap-8 text-[13px] text-foreground/85">
             <a href="#about">about us</a>
-            <a href="#works">works</a>
             <a href="#process">process</a>
             <a href="#why">why plevid</a>
             <a href="#contact">contact us</a>
@@ -371,10 +370,50 @@ function AboutPage() {
         </Reveal>
       </section>
 
-      <footer id="contact" className="border-t border-foreground/15 px-6 md:px-10 py-10 flex items-center justify-between text-[12px] text-foreground/60">
-        <img src={plevidLogo} alt="PLEVID" className="h-4 w-auto" />
-        <div>Mumbai · India</div>
-        <div>© {new Date().getFullYear()} Plevid Group</div>
+      <footer id="contact" className="border-t border-foreground/15 px-6 md:px-10 pt-20 pb-10">
+        <div className="max-w-[1400px] mx-auto">
+          <div className={`text-accent ${serif} text-lg`}>
+            <span className="inline-block w-2 h-2 rounded-full bg-accent align-middle mr-2" />
+            contact us.
+          </div>
+          <h2
+            className="mt-6 font-sans font-black lowercase leading-[0.9] tracking-[-0.04em]"
+            style={{ fontSize: "clamp(48px, 10vw, 140px)" }}
+          >
+            let's talk<br />light.
+          </h2>
+
+          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-12 text-[14px]">
+            <div>
+              <div className={`${serif} text-accent text-sm mb-3`}>01 — studio</div>
+              <p className="text-foreground/80 leading-[1.6]">
+                Plevid Group<br />
+                Lower Parel<br />
+                Mumbai 400013, India
+              </p>
+            </div>
+            <div>
+              <div className={`${serif} text-accent text-sm mb-3`}>02 — enquiries</div>
+              <p className="text-foreground/80 leading-[1.6]">
+                <a href="mailto:hello@plevid.com" className="hover:text-accent transition-colors">hello@plevid.com</a><br />
+                <a href="mailto:projects@plevid.com" className="hover:text-accent transition-colors">projects@plevid.com</a>
+              </p>
+            </div>
+            <div>
+              <div className={`${serif} text-accent text-sm mb-3`}>03 — direct</div>
+              <p className="text-foreground/80 leading-[1.6]">
+                <a href="tel:+912240000000" className="hover:text-accent transition-colors">+91 22 4000 0000</a><br />
+                Mon — Sat, 10:00 — 19:00 IST
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-20 pt-6 border-t border-foreground/15 flex flex-col md:flex-row items-center justify-between gap-4 text-[12px] text-foreground/60">
+            <img src={plevidLogo} alt="PLEVID" className="h-4 w-auto" />
+            <div>Based in Mumbai · Lighting across India</div>
+            <div>© {new Date().getFullYear()} Plevid Group</div>
+          </div>
+        </div>
       </footer>
     </div>
   );
