@@ -119,19 +119,19 @@ function Hero() {
   const scale = reduce ? 1 : titleScale;
 
   return (
-    <section ref={ref} id="about" className="relative pt-40 pb-8">
-      <div className={`text-center text-accent ${serif} text-lg`}>
+    <section ref={ref} id="about" className="relative pt-28 md:pt-40 pb-8">
+      <div className={`text-center text-accent ${serif} text-base md:text-lg px-4`}>
         main <span className="text-foreground/60 not-italic font-sans">/</span> about us
       </div>
 
-      <div className="relative mx-auto mt-10 max-w-[1400px] h-[58vh] min-h-[460px]">
+      <div className="relative mx-auto mt-6 md:mt-10 max-w-[1400px] h-[40vh] min-h-[280px] md:h-[58vh] md:min-h-[460px]">
         <motion.img
           src={float1}
           alt="Architectural wall light"
           width={512}
           height={640}
           style={{ y: mv(yLeft), willChange: "transform" }}
-          className="absolute left-[8%] top-[6%] w-[140px] md:w-[180px] aspect-[4/5] object-cover grayscale"
+          className="absolute left-[4%] md:left-[8%] top-[6%] w-[90px] sm:w-[120px] md:w-[180px] aspect-[4/5] object-cover grayscale"
         />
         <motion.img
           src={heroLighting}
@@ -139,7 +139,7 @@ function Hero() {
           width={800}
           height={1024}
           style={{ y: mv(yCenter), willChange: "transform" }}
-          className="absolute left-1/2 -translate-x-1/2 top-0 w-[260px] md:w-[360px] aspect-[4/5] object-cover"
+          className="absolute left-1/2 -translate-x-1/2 top-0 w-[170px] sm:w-[220px] md:w-[360px] aspect-[4/5] object-cover"
         />
         <motion.img
           src={float2}
@@ -148,19 +148,20 @@ function Hero() {
           height={640}
           loading="lazy"
           style={{ y: mv(yRight), willChange: "transform" }}
-          className="absolute right-[6%] top-[42%] w-[110px] md:w-[150px] aspect-[4/5] object-cover"
+          className="absolute right-[4%] md:right-[6%] top-[42%] w-[80px] sm:w-[100px] md:w-[150px] aspect-[4/5] object-cover"
         />
       </div>
 
       <motion.h1
         className="font-sans font-black lowercase leading-[0.82] tracking-[-0.05em] text-center px-2"
-        style={{ fontSize: "clamp(96px, 26vw, 460px)", scale, transformOrigin: "50% 50%", willChange: "transform" }}
+        style={{ fontSize: "clamp(72px, 26vw, 460px)", scale, transformOrigin: "50% 50%", willChange: "transform" }}
       >
         about us
       </motion.h1>
     </section>
   );
 }
+
 
 function RevealStatement({ text }: { text: string }) {
   const ref = useRef<HTMLHeadingElement>(null);
@@ -206,13 +207,31 @@ function ProcessTimeline() {
   }, []);
 
   return (
-    <section id="process" className="relative px-6 pt-24 pb-40">
-      <Reveal className={`text-center ${serif} text-accent text-2xl`}>
+    <section id="process" className="relative px-6 pt-24 pb-24 md:pb-40">
+      <Reveal className={`text-center ${serif} text-accent text-xl md:text-2xl`}>
         <span className="inline-block w-2 h-2 rounded-full bg-accent align-middle mr-2" />
         process.
       </Reveal>
 
-      <div ref={ref} className="relative mx-auto mt-16 max-w-[1200px]" style={{ height: "1700px" }}>
+      {/* Mobile: stacked list with vertical accent line */}
+      <div className="md:hidden mt-12 max-w-[520px] mx-auto relative pl-6">
+        <div className="absolute left-2 top-2 bottom-2 w-px bg-accent/70" />
+        <div className="space-y-10">
+          {steps.map((s) => (
+            <Reveal key={s.n}>
+              <div className="relative">
+                <span className="absolute -left-[18px] top-2 w-2 h-2 rounded-full bg-accent" />
+                <div className={`${serif} text-accent text-sm mb-2`}>{s.n}.</div>
+                <h3 className="text-[20px] font-bold lowercase leading-tight">{s.title}</h3>
+                <p className="mt-3 text-[13px] leading-[1.55] text-foreground/70">{s.text}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop/tablet: serpentine path */}
+      <div ref={ref} className="relative mx-auto mt-16 max-w-[1200px] hidden md:block" style={{ height: "1700px" }}>
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none"
           viewBox="0 0 1000 1700"
@@ -267,6 +286,7 @@ function ProcessTimeline() {
   );
 }
 
+
 function AboutPage() {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -293,7 +313,7 @@ function AboutPage() {
 
       <Hero />
 
-      <section className="px-6 pt-40 pb-32">
+      <section className="px-6 pt-24 md:pt-40 pb-20 md:pb-32">
         <Reveal>
           <div className="flex flex-col items-center text-center">
             <div className="text-accent text-xl leading-none">+</div>
@@ -308,7 +328,7 @@ function AboutPage() {
 
         <RevealStatement text="we illuminate spaces through architectural lighting, global design partnerships, and thoughtful execution." />
 
-        <Reveal className="mt-16 mx-auto max-w-[1100px] flex justify-end">
+        <Reveal className="mt-12 md:mt-16 mx-auto max-w-[1100px] flex md:justify-end">
           <div className="max-w-[440px] text-[14px] leading-[1.6] text-foreground/75 space-y-4">
             <p>
               Plevid Group continues to be a guiding force in India's architectural lighting industry. Based in
@@ -325,7 +345,8 @@ function AboutPage() {
 
       <ProcessTimeline />
 
-      <section id="why" className="px-6 md:px-10 py-32 max-w-[1400px] mx-auto">
+      <section id="why" className="px-6 md:px-10 py-24 md:py-32 max-w-[1400px] mx-auto">
+
         <Reveal>
           <h2
             className="font-sans font-black lowercase leading-[0.9] tracking-[-0.04em]"
@@ -335,12 +356,13 @@ function AboutPage() {
           </h2>
         </Reveal>
 
-        <div className="mt-24 grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-20">
+        <div className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-20 gap-y-14 md:gap-y-20">
           {why.map((w, i) => (
             <Reveal key={w.n} delay={i * 0.08}>
               <div className="border-t border-foreground/15 pt-6">
                 <div className={`${serif} text-accent text-sm mb-3`}>{w.n}</div>
-                <h3 className="text-[28px] md:text-[34px] font-bold lowercase leading-[1.05] tracking-tight">
+                <h3 className="text-[24px] md:text-[34px] font-bold lowercase leading-[1.05] tracking-tight">
+
                   {w.title}
                 </h3>
                 <p className="mt-4 text-[14px] leading-[1.6] text-foreground/70 max-w-[420px]">{w.text}</p>
@@ -350,25 +372,26 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="px-6 py-48 flex flex-col items-center justify-center text-center">
+      <section className="px-6 py-28 md:py-48 flex flex-col items-center justify-center text-center">
         <Reveal y={24}>
           <h2
             className="font-sans font-black lowercase leading-[0.88] tracking-[-0.045em]"
-            style={{ fontSize: "clamp(64px, 13vw, 220px)" }}
+            style={{ fontSize: "clamp(52px, 13vw, 220px)" }}
           >
             we don't<br />sell lights.
           </h2>
         </Reveal>
         <Reveal y={24}>
           <h2
-            className="mt-8 font-sans font-black lowercase leading-[0.88] tracking-[-0.045em] text-foreground/70"
-            style={{ fontSize: "clamp(64px, 13vw, 220px)" }}
+            className="mt-6 md:mt-8 font-sans font-black lowercase leading-[0.88] tracking-[-0.045em] text-foreground/70"
+            style={{ fontSize: "clamp(52px, 13vw, 220px)" }}
           >
             we shape<br />
             <span className="text-accent">experiences.</span>
           </h2>
         </Reveal>
       </section>
+
 
       <footer id="contact" className="border-t border-foreground/15 px-6 md:px-10 pt-20 pb-10">
         <div className="max-w-[1400px] mx-auto">
