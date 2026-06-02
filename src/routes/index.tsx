@@ -356,12 +356,13 @@ function AboutPage() {
           </h2>
         </Reveal>
 
-        <div className="mt-24 grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-20">
+        <div className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-20 gap-y-14 md:gap-y-20">
           {why.map((w, i) => (
             <Reveal key={w.n} delay={i * 0.08}>
               <div className="border-t border-foreground/15 pt-6">
                 <div className={`${serif} text-accent text-sm mb-3`}>{w.n}</div>
-                <h3 className="text-[28px] md:text-[34px] font-bold lowercase leading-[1.05] tracking-tight">
+                <h3 className="text-[24px] md:text-[34px] font-bold lowercase leading-[1.05] tracking-tight">
+
                   {w.title}
                 </h3>
                 <p className="mt-4 text-[14px] leading-[1.6] text-foreground/70 max-w-[420px]">{w.text}</p>
