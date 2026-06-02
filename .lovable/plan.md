@@ -1,63 +1,64 @@
-# PLEVID — About Us page
+# PLEVID — motion & interaction layer
 
-A direct structural port of the reference About page, rebuilt for PLEVID (architectural lighting, Mumbai). Black canvas, oversized lowercase typography, single lime accent (#C8FF4D), three images max, hand-drawn curved process path.
+Add a restrained, scroll-driven motion layer to the existing About page. No new sections, no redesign — only behavior. All motion is tied to scroll position or viewport entry, never autoplay loops.
 
-## Route & files
+## Library
 
-- Replace `src/routes/index.tsx` with the About Us page (single-page brief — this is the page).
-- Save the uploaded PLEVID logo as a Lovable asset and use it in the top-left of the nav.
-- Generate 3 architectural lighting images via `imagegen` into `src/assets/`:
-  1. Small monochrome lighting project (top-left floating, ~180×220)
-  2. Large vertical hero image — luxury hotel lobby / staircase lighting installation (4:5, center)
-  3. Small architectural spotlight detail (right-side floating, ~140×170)
-- Update root `head()` with PLEVID title + description + og tags.
+- Add `framer-motion` (already React 19 compatible) for `useScroll`, `useTransform`, and viewport reveals. Single dependency, tree-shakeable, SSR-safe.
+- No GSAP, no ScrollTrigger, no Lenis. Native scroll only.
 
-## Design tokens (src/styles.css)
+## Per-section behavior
 
-- `--background: oklch(0 0 0)` (#000)
-- `--foreground: oklch(1 0 0)` (#fff)
-- `--accent: oklch(0.93 0.19 125)` (≈ #C8FF4D)
-- Add font: Inter Tight (weights 400/500/900) + a serif italic for small "process." / "main / about us" labels (Instrument Serif or similar) via Google Fonts in root head links.
-- Body defaults: black bg, white text, Inter Tight.
+**1. Hero title `about us`**
+- Wrap the H1 in a `motion.h1` whose `scale` is driven by `useScroll({ target: heroRef, offset: ["start start", "end start"] })`.
+- `scale: 0.68 → 1.0` across the first ~20% of scroll, then clamped at 1.0.
+- `transform-origin: 50% 50%`. No opacity change, no Y movement. Easing: linear (scroll-linked).
 
-## Page structure (top → bottom)
+**2. Hero images parallax**
+- Same `useScroll` target as the title.
+- Left float: `y: 0 → 40`
+- Center hero: `y: 0 → 16`
+- Right float: `y: 0 → 48`
+- Pure `translateY`, no scale, no rotation. Movement caps when hero leaves viewport.
 
-1. **Nav bar** — thin top row. Left: PLEVID logo (small, white). Center: `about us · works · projects · brands · contact us`. Right: pill `get in touch` outlined.
-2. **Hero composition**
-   - Top-center tiny italic accent label: `main / about us`
-   - Floating image 1 (top-left, slight offset)
-   - Center large 4:5 lighting image
-   - Floating image 2 (right, lower than image 1)
-   - Massive `about us` headline, lowercase, weight 900, tracking tight, scaled to ~92vw using `clamp()`. Sits directly under the image stack and dominates.
-3. **Intro band**
-   - Tiny `+` glyph centered, thin vertical divider
-   - Small centered caption: `Based in Mumbai. Lighting across India.`
-   - Large centered statement (clamp ~40–72px, weight 700): *"we illuminate spaces through architectural lighting, global design partnerships, and thoughtful execution."*
-   - Narrow right-offset paragraph (max-w ~420px) with the two-paragraph Plevid Group copy from the brief.
-4. **Process section**
-   - Italic accent label `process.` at top center
-   - Single SVG curved path running vertically down ~1600px, 1px stroke, accent color, with subtle loops mirroring the reference's hand-drawn curve
-   - 6 steps anchored to points along the path, alternating left/right:
-     - 01 research · 02 design concept · 03 lighting plan · 04 project execution · 05 customisation · 06 delivery
-   - Each step: small accent dot on the path, accent italic number (`01.`), bold lowercase title, 3-line description, max-w ~260px.
-5. **why plevid.** section
-   - Heading `why plevid.` left-aligned, large (clamp 56–120px), weight 900, lowercase
-   - 4 items as a 2-col editorial list (no cards, no icons): small accent number, bold title, one-line description, generous row gap.
-6. **Closing statement**
-   - Full-viewport centered slogan: `we don't sell lights.` / `we shape experiences.` — massive, lowercase, weight 900, two stacked lines.
-7. **Footer** — minimal: PLEVID wordmark left, Mumbai · India right, thin top border.
+**3. Intro statement — progressive word reveal**
+- Split the sentence into words at build time (`text.split(" ")`), render each as a `<motion.span>`.
+- `useScroll` on the statement container with `offset: ["start 0.85", "start 0.25"]`.
+- Each word's opacity = `useTransform(progress, [i/n, (i+1)/n], [0.12, 1])` — left-to-right spotlight sweep.
+- No translate, no blur, no cursor. Initial opacity 0.12 is visible on first paint (no FOUC).
 
-## Technical notes
+**4. Process timeline — scroll-drawn path**
+- Give the `<path>` a ref; measure `getTotalLength()` in `useEffect`, store in state.
+- Set `strokeDasharray = strokeDashoffset = length` initially.
+- `useScroll` on the process section with `offset: ["start 0.8", "end 0.2"]`.
+- `strokeDashoffset = useTransform(progress, [0,1], [length, 0])` via `motion.path`.
+- Each of the 6 step blocks: `motion.div` with `initial={{opacity:0, y:20}}`, `whileInView={{opacity:1, y:0}}`, `viewport={{ once: true, amount: 0.6 }}`, `transition={{ duration: 0.5, ease: [0.22,1,0.36,1] }}`. The accent dot uses the same reveal with a 0.1s delay so it reads as "the line reached me, then I appeared".
 
-- All sizing via `clamp()` for fluid type; no breakpoint-specific JSX needed beyond Tailwind's md: for nav.
-- Process path: inline SVG with a single `<path>` using cubic beziers; absolutely-positioned step blocks aligned by percentage. No animation libraries required; optional subtle `stroke-dasharray` reveal on scroll via IntersectionObserver can be added but is not essential to the brief.
-- Images via `imagegen` (standard tier) saved to `src/assets/hero-lighting.jpg`, `src/assets/float-1.jpg`, `src/assets/float-2.jpg`, then imported as ES modules.
-- Logo: copy uploaded PNG to `src/assets/plevid-logo.png` and import.
-- `head()` on the index route: title `PLEVID — About`, description from intro paragraph, og:image = hero lighting asset.
-- Respect rules: no cards, no shadows, no gradients, accent used only on path/dots/labels/`+` glyph.
+**5. Generic section reveals**
+- Intro band, why-plevid heading + items, footer: `motion.div` wrapper with `initial={{opacity:0, y:30}}`, `whileInView={{opacity:1, y:0}}`, `viewport={{ once: true, amount: 0.3 }}`, `transition={{ duration: 0.7, ease: [0.22,1,0.36,1] }}`.
+- `why plevid.` items stagger via a parent `staggerChildren: 0.08`.
+
+**6. Closing brand statement**
+- `we don't sell lights.` — reveal on enter (`opacity 0→1, y 24→0`, 0.7s).
+- `we shape experiences.` — same reveal, triggered when its own element hits `amount: 0.6` (naturally later in scroll). No extra orchestration needed; the scroll gap between the two lines provides the cinematic beat.
+
+**7. Cursor light (optional, on by default, desktop only)**
+- A single `position: fixed` div, 600px circle, `background: radial-gradient(closest-side, #C8FF4D, transparent)`, `filter: blur(100px)`, `opacity: 0.05`, `pointer-events: none`, `mix-blend-mode: screen`, `z-index: 1`.
+- Position updated via `requestAnimationFrame` from a `mousemove` listener with lerp (factor 0.12) for soft trailing.
+- Disabled when `matchMedia('(pointer: coarse)')` or `prefers-reduced-motion: reduce`.
+
+## Accessibility & perf
+
+- Wrap the whole motion layer behind a `prefers-reduced-motion` check: when set, all `motion.*` components fall back to static (`initial=false`, parallax `y=0`, title `scale=1`, words full opacity, path fully drawn).
+- All scroll listeners use Framer's `useScroll` (rAF-batched). No manual scroll handlers except the cursor.
+- `will-change: transform` only on the hero title and the three hero images.
+
+## Files touched
+
+- `src/routes/index.tsx` — refactor into small subcomponents (`HeroTitle`, `HeroImages`, `RevealStatement`, `ProcessTimeline`, `Reveal` wrapper, `CursorLight`). No layout, color, or copy changes.
+- `package.json` — add `framer-motion`.
 
 ## Out of scope
 
-- Other routes (works, contact) — not requested.
-- Scroll animations beyond optional path reveal.
-- CMS / data fetching.
+- No new pages, copy, images, colors, fonts, or components.
+- No page transitions, no smooth-scroll hijack, no loader, no counters.
