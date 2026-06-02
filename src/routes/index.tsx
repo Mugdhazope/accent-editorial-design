@@ -82,7 +82,7 @@ function CursorLight() {
     const tick = () => {
       x += (tx - x) * 0.12;
       y += (ty - y) * 0.12;
-      el.style.transform = `translate3d(${x - 300}px, ${y - 300}px, 0)`;
+      el.style.transform = `translate3d(${x - 180}px, ${y - 180}px, 0)`;
       raf = requestAnimationFrame(tick);
     };
     el.style.opacity = "1";
@@ -94,12 +94,12 @@ function CursorLight() {
     <div
       ref={ref}
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[1] h-[600px] w-[600px] rounded-full opacity-0"
+      className="pointer-events-none fixed left-0 top-0 z-[1] h-[360px] w-[360px] rounded-full opacity-0"
       style={{
         background: "radial-gradient(closest-side, #C8FF4D, transparent)",
-        filter: "blur(100px)",
+        filter: "blur(80px)",
         mixBlendMode: "screen",
-        opacity: 0.05,
+        opacity: 0.025,
       }}
     />
   );
