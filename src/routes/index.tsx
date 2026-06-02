@@ -94,12 +94,12 @@ function CursorLight() {
     <div
       ref={ref}
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[1] h-[600px] w-[600px] rounded-full opacity-0"
+      className="pointer-events-none fixed left-0 top-0 z-[1] h-[360px] w-[360px] rounded-full opacity-0"
       style={{
         background: "radial-gradient(closest-side, #C8FF4D, transparent)",
-        filter: "blur(100px)",
+        filter: "blur(80px)",
         mixBlendMode: "screen",
-        opacity: 0.05,
+        opacity: 0.025,
       }}
     />
   );
