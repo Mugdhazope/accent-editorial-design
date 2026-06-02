@@ -207,13 +207,31 @@ function ProcessTimeline() {
   }, []);
 
   return (
-    <section id="process" className="relative px-6 pt-24 pb-40">
-      <Reveal className={`text-center ${serif} text-accent text-2xl`}>
+    <section id="process" className="relative px-6 pt-24 pb-24 md:pb-40">
+      <Reveal className={`text-center ${serif} text-accent text-xl md:text-2xl`}>
         <span className="inline-block w-2 h-2 rounded-full bg-accent align-middle mr-2" />
         process.
       </Reveal>
 
-      <div ref={ref} className="relative mx-auto mt-16 max-w-[1200px]" style={{ height: "1700px" }}>
+      {/* Mobile: stacked list with vertical accent line */}
+      <div className="md:hidden mt-12 max-w-[520px] mx-auto relative pl-6">
+        <div className="absolute left-2 top-2 bottom-2 w-px bg-accent/70" />
+        <div className="space-y-10">
+          {steps.map((s) => (
+            <Reveal key={s.n}>
+              <div className="relative">
+                <span className="absolute -left-[18px] top-2 w-2 h-2 rounded-full bg-accent" />
+                <div className={`${serif} text-accent text-sm mb-2`}>{s.n}.</div>
+                <h3 className="text-[20px] font-bold lowercase leading-tight">{s.title}</h3>
+                <p className="mt-3 text-[13px] leading-[1.55] text-foreground/70">{s.text}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop/tablet: serpentine path */}
+      <div ref={ref} className="relative mx-auto mt-16 max-w-[1200px] hidden md:block" style={{ height: "1700px" }}>
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none"
           viewBox="0 0 1000 1700"
@@ -267,6 +285,7 @@ function ProcessTimeline() {
     </section>
   );
 }
+
 
 function AboutPage() {
   return (
