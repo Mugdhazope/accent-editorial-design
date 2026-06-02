@@ -119,19 +119,19 @@ function Hero() {
   const scale = reduce ? 1 : titleScale;
 
   return (
-    <section ref={ref} id="about" className="relative pt-40 pb-8">
-      <div className={`text-center text-accent ${serif} text-lg`}>
+    <section ref={ref} id="about" className="relative pt-28 md:pt-40 pb-8">
+      <div className={`text-center text-accent ${serif} text-base md:text-lg px-4`}>
         main <span className="text-foreground/60 not-italic font-sans">/</span> about us
       </div>
 
-      <div className="relative mx-auto mt-10 max-w-[1400px] h-[58vh] min-h-[460px]">
+      <div className="relative mx-auto mt-6 md:mt-10 max-w-[1400px] h-[40vh] min-h-[280px] md:h-[58vh] md:min-h-[460px]">
         <motion.img
           src={float1}
           alt="Architectural wall light"
           width={512}
           height={640}
           style={{ y: mv(yLeft), willChange: "transform" }}
-          className="absolute left-[8%] top-[6%] w-[140px] md:w-[180px] aspect-[4/5] object-cover grayscale"
+          className="absolute left-[4%] md:left-[8%] top-[6%] w-[90px] sm:w-[120px] md:w-[180px] aspect-[4/5] object-cover grayscale"
         />
         <motion.img
           src={heroLighting}
@@ -139,7 +139,7 @@ function Hero() {
           width={800}
           height={1024}
           style={{ y: mv(yCenter), willChange: "transform" }}
-          className="absolute left-1/2 -translate-x-1/2 top-0 w-[260px] md:w-[360px] aspect-[4/5] object-cover"
+          className="absolute left-1/2 -translate-x-1/2 top-0 w-[170px] sm:w-[220px] md:w-[360px] aspect-[4/5] object-cover"
         />
         <motion.img
           src={float2}
@@ -148,19 +148,20 @@ function Hero() {
           height={640}
           loading="lazy"
           style={{ y: mv(yRight), willChange: "transform" }}
-          className="absolute right-[6%] top-[42%] w-[110px] md:w-[150px] aspect-[4/5] object-cover"
+          className="absolute right-[4%] md:right-[6%] top-[42%] w-[80px] sm:w-[100px] md:w-[150px] aspect-[4/5] object-cover"
         />
       </div>
 
       <motion.h1
         className="font-sans font-black lowercase leading-[0.82] tracking-[-0.05em] text-center px-2"
-        style={{ fontSize: "clamp(96px, 26vw, 460px)", scale, transformOrigin: "50% 50%", willChange: "transform" }}
+        style={{ fontSize: "clamp(72px, 26vw, 460px)", scale, transformOrigin: "50% 50%", willChange: "transform" }}
       >
         about us
       </motion.h1>
     </section>
   );
 }
+
 
 function RevealStatement({ text }: { text: string }) {
   const ref = useRef<HTMLHeadingElement>(null);
