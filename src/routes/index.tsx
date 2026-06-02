@@ -313,7 +313,7 @@ function AboutPage() {
 
       <Hero />
 
-      <section className="px-6 pt-40 pb-32">
+      <section className="px-6 pt-24 md:pt-40 pb-20 md:pb-32">
         <Reveal>
           <div className="flex flex-col items-center text-center">
             <div className="text-accent text-xl leading-none">+</div>
@@ -328,7 +328,7 @@ function AboutPage() {
 
         <RevealStatement text="we illuminate spaces through architectural lighting, global design partnerships, and thoughtful execution." />
 
-        <Reveal className="mt-16 mx-auto max-w-[1100px] flex justify-end">
+        <Reveal className="mt-12 md:mt-16 mx-auto max-w-[1100px] flex md:justify-end">
           <div className="max-w-[440px] text-[14px] leading-[1.6] text-foreground/75 space-y-4">
             <p>
               Plevid Group continues to be a guiding force in India's architectural lighting industry. Based in
@@ -345,7 +345,8 @@ function AboutPage() {
 
       <ProcessTimeline />
 
-      <section id="why" className="px-6 md:px-10 py-32 max-w-[1400px] mx-auto">
+      <section id="why" className="px-6 md:px-10 py-24 md:py-32 max-w-[1400px] mx-auto">
+
         <Reveal>
           <h2
             className="font-sans font-black lowercase leading-[0.9] tracking-[-0.04em]"
