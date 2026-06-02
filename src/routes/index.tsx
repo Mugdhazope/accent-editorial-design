@@ -82,7 +82,7 @@ function CursorLight() {
     const tick = () => {
       x += (tx - x) * 0.12;
       y += (ty - y) * 0.12;
-      el.style.transform = `translate3d(${x - 300}px, ${y - 300}px, 0)`;
+      el.style.transform = `translate3d(${x - 180}px, ${y - 180}px, 0)`;
       raf = requestAnimationFrame(tick);
     };
     el.style.opacity = "1";
