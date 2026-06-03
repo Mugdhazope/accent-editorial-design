@@ -105,18 +105,116 @@ function CursorLight() {
   );
 }
 
+type HeroImageProps = {
+  src: string;
+  alt: string;
+  caption: string;
+  className: string;
+  glowClass: string;
+  scrollY: MotionValue<number> | number;
+  floatY?: number;
+  mouseX: number;
+  mouseY: number;
+  parallaxStrength: number;
+  reveal: { delay: number };
+  reduce: boolean;
+  captionAlign?: "left" | "right";
+};
+
+function HeroImage({
+  src, alt, caption, className, glowClass, scrollY, floatY = 0,
+  mouseX, mouseY, parallaxStrength, reveal, reduce, captionAlign = "left",
+}: HeroImageProps) {
+  const px = reduce ? 0 : mouseX * parallaxStrength;
+  const py = reduce ? 0 : mouseY * parallaxStrength;
+  return (
+    <motion.figure
+      className={`absolute group ${className}`}
+      style={{
+        y: scrollY,
+        translateY: floatY,
+        willChange: "transform",
+      }}
+      initial={reduce ? false : { opacity: 0, y: 18 }}
+      animate={reduce ? undefined : { opacity: 1, y: 0 }}
+      transition={{ duration: 1.1, ease: EASE, delay: reveal.delay }}
+    >
+      <motion.div
+        className="relative w-full h-full"
+        style={{ x: px, y: py }}
+        transition={{ type: "spring", stiffness: 60, damping: 20 }}
+      >
+        {/* Soft glow behind */}
+        <div
+          aria-hidden
+          className={`absolute -inset-8 md:-inset-12 rounded-full blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-700 ${glowClass}`}
+        />
+        {/* Shadow layer */}
+        <div
+          aria-hidden
+          className="absolute inset-0 translate-y-3 blur-xl bg-black/60 -z-[1]"
+        />
+        {/* Image wrapper */}
+        <div className="relative overflow-hidden w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.03]">
+          <img
+            src={src}
+            alt={alt}
+            className="block w-full h-full object-cover transition-[filter] duration-700 ease-out group-hover:brightness-110 group-hover:contrast-105"
+          />
+          {/* Grain overlay */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.12] mix-blend-overlay"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+              backgroundSize: "160px 160px",
+            }}
+          />
+          {/* Floating light reflection */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-y-1/4 -left-1/3 w-1/2 rotate-12 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%)",
+              animation: reduce ? undefined : "heroSheen 9s ease-in-out infinite",
+            }}
+          />
+          {/* Always-on subtle sheen */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.04) 50%, transparent 60%)",
+              animation: reduce ? undefined : "heroSheen 14s ease-in-out infinite",
+            }}
+          />
+        </div>
+      </motion.div>
+      <figcaption
+        className={`mt-3 ${serif} text-[10px] md:text-[11px] tracking-wide text-foreground/45 ${
+          captionAlign === "right" ? "text-right" : "text-left"
+        }`}
+      >
+        — {caption}
+      </figcaption>
+    </motion.figure>
+  );
+}
+
 function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
   const titleScale = useTransform(scrollYProgress, [0.15, 0.5], [0.68, 1], { clamp: true });
-  // Differential scroll parallax for depth
   const yLeftScroll = useTransform(scrollYProgress, [0, 1], [0, 140]);
   const yCenterScroll = useTransform(scrollYProgress, [0, 1], [0, 60]);
   const yRightScroll = useTransform(scrollYProgress, [0, 1], [0, 160]);
 
-  // Subtle, slow floating motion on side images
+  // Slow floating motion (side images only)
   const [tFloat, setTFloat] = useState(0);
   useEffect(() => {
     if (reduce) return;
@@ -133,36 +231,73 @@ function Hero() {
   const floatLeft = reduce ? 0 : Math.sin(tFloat * 0.5) * 8;
   const floatRight = reduce ? 0 : Math.sin(tFloat * 0.4 + 1.7) * 10;
 
-  const mv = (v: MotionValue<number>) => (reduce ? 0 : v);
+  // Mouse-based micro parallax (normalized -0.5..0.5)
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  useEffect(() => {
+    if (reduce) return;
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    const el = ref.current;
+    if (!el) return;
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const nx = (e.clientX - rect.left) / rect.width - 0.5;
+      const ny = (e.clientY - rect.top) / rect.height - 0.5;
+      setMouse({ x: nx, y: ny });
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [reduce]);
+
+  const mv = (v: MotionValue<number>) => (reduce ? 0 : (v as MotionValue<number> | number));
   const scale = reduce ? 1 : titleScale;
 
   return (
     <section ref={ref} id="about" className="relative pt-28 md:pt-36 pb-8">
       <div className="relative mx-auto max-w-[1400px] h-[62vh] min-h-[420px] md:h-[78vh] md:min-h-[600px]">
-        <motion.img
+        <HeroImage
           src={float1}
           alt="Architectural wall light"
-          width={512}
-          height={640}
-          style={{ y: mv(yLeftScroll), translateY: floatLeft, willChange: "transform" }}
-          className="absolute left-[4%] md:left-[8%] top-[10%] w-[90px] sm:w-[120px] md:w-[180px] aspect-[4/5] object-cover grayscale"
+          caption="Mumbai, India"
+          className="left-[4%] md:left-[8%] top-[12%] w-[84px] sm:w-[110px] md:w-[160px] aspect-[4/5] grayscale"
+          glowClass="bg-[radial-gradient(closest-side,rgba(255,236,180,0.35),transparent)]"
+          scrollY={mv(yLeftScroll)}
+          floatY={floatLeft}
+          mouseX={mouse.x}
+          mouseY={mouse.y}
+          parallaxStrength={6}
+          reveal={{ delay: 0.05 }}
+          reduce={!!reduce}
+          captionAlign="left"
         />
-        <motion.img
+        <HeroImage
           src={heroLighting}
           alt="Luxury lobby lighting installation"
-          width={800}
-          height={1024}
-          style={{ y: mv(yCenterScroll), willChange: "transform" }}
-          className="absolute left-1/2 -translate-x-1/2 top-[4%] w-[170px] sm:w-[220px] md:w-[360px] aspect-[4/5] object-cover"
+          caption="Hospitality Project"
+          className="left-1/2 -translate-x-1/2 top-[2%] w-[180px] sm:w-[240px] md:w-[380px] aspect-[4/5]"
+          glowClass="bg-[radial-gradient(closest-side,rgba(200,255,77,0.18),transparent)]"
+          scrollY={mv(yCenterScroll)}
+          mouseX={mouse.x}
+          mouseY={mouse.y}
+          parallaxStrength={3}
+          reveal={{ delay: 0.25 }}
+          reduce={!!reduce}
+          captionAlign="left"
         />
-        <motion.img
+        <HeroImage
           src={float2}
           alt="Architectural spotlight detail"
-          width={512}
-          height={640}
-          loading="lazy"
-          style={{ y: mv(yRightScroll), translateY: floatRight, willChange: "transform" }}
-          className="absolute right-[4%] md:right-[6%] top-[48%] w-[80px] sm:w-[100px] md:w-[150px] aspect-[4/5] object-cover"
+          caption="Custom Installation"
+          className="right-[4%] md:right-[6%] top-[50%] w-[76px] sm:w-[96px] md:w-[140px] aspect-[4/5]"
+          glowClass="bg-[radial-gradient(closest-side,rgba(255,220,150,0.3),transparent)]"
+          scrollY={mv(yRightScroll)}
+          floatY={floatRight}
+          mouseX={mouse.x}
+          mouseY={mouse.y}
+          parallaxStrength={7}
+          reveal={{ delay: 0.45 }}
+          reduce={!!reduce}
+          captionAlign="right"
         />
       </div>
 
