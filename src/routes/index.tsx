@@ -274,7 +274,7 @@ function Hero() {
           src={heroLighting.url}
           alt="Luxury lobby lighting installation"
           caption="Hospitality Project"
-          className="left-1/2 -translate-x-1/2 top-[2%] w-[180px] sm:w-[240px] md:w-[380px] aspect-[4/5]"
+          className="left-1/2 -translate-x-1/2 top-[2%] w-[170px] sm:w-[220px] md:w-[340px] aspect-[3/4]"
           glowClass="bg-[radial-gradient(closest-side,rgba(200,255,77,0.18),transparent)]"
           scrollY={mv(yCenterScroll)}
           mouseX={mouse.x}
