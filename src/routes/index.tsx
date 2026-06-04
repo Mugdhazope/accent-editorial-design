@@ -288,7 +288,7 @@ function Hero() {
           src={float2.url}
           alt="Architectural spotlight detail"
           caption="Custom Installation"
-          className="right-[4%] md:right-[6%] top-[50%] w-[76px] sm:w-[96px] md:w-[140px] aspect-[4/5]"
+          className="right-[4%] md:right-[6%] top-[50%] w-[110px] sm:w-[140px] md:w-[200px] aspect-[3/2]"
           glowClass="bg-[radial-gradient(closest-side,rgba(255,220,150,0.3),transparent)]"
           scrollY={mv(yRightScroll)}
           floatY={floatRight}
