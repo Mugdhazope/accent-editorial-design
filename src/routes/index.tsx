@@ -7,9 +7,9 @@ import {
   useReducedMotion,
   type MotionValue,
 } from "framer-motion";
-import heroLighting from "@/assets/hero-lighting.jpg";
-import float1 from "@/assets/float-1.jpg";
-import float2 from "@/assets/float-2.jpg";
+import heroLighting from "@/assets/hero-middle.png.asset.json";
+import float1 from "@/assets/hero-left.jpg.asset.json";
+import float2 from "@/assets/hero-right.jpg.asset.json";
 import plevidLogo from "@/assets/plevid-logo.png";
 
 export const Route = createFileRoute("/")({
