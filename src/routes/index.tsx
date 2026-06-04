@@ -259,7 +259,7 @@ function Hero() {
           src={float1.url}
           alt="Architectural wall light"
           caption="Mumbai, India"
-          className="left-[4%] md:left-[8%] top-[12%] w-[84px] sm:w-[110px] md:w-[160px] aspect-[4/5] grayscale"
+          className="left-[4%] md:left-[8%] top-[12%] w-[120px] sm:w-[160px] md:w-[220px] aspect-[3/2] grayscale"
           glowClass="bg-[radial-gradient(closest-side,rgba(255,236,180,0.35),transparent)]"
           scrollY={mv(yLeftScroll)}
           floatY={floatLeft}
