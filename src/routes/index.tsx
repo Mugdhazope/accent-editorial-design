@@ -256,7 +256,7 @@ function Hero() {
     <section ref={ref} id="about" className="relative pt-28 md:pt-36 pb-8">
       <div className="relative mx-auto max-w-[1400px] h-[62vh] min-h-[420px] md:h-[78vh] md:min-h-[600px]">
         <HeroImage
-          src={float1}
+          src={float1.url}
           alt="Architectural wall light"
           caption="Mumbai, India"
           className="left-[4%] md:left-[8%] top-[12%] w-[84px] sm:w-[110px] md:w-[160px] aspect-[4/5] grayscale"
@@ -271,7 +271,7 @@ function Hero() {
           captionAlign="left"
         />
         <HeroImage
-          src={heroLighting}
+          src={heroLighting.url}
           alt="Luxury lobby lighting installation"
           caption="Hospitality Project"
           className="left-1/2 -translate-x-1/2 top-[2%] w-[180px] sm:w-[240px] md:w-[380px] aspect-[4/5]"
@@ -285,7 +285,7 @@ function Hero() {
           captionAlign="left"
         />
         <HeroImage
-          src={float2}
+          src={float2.url}
           alt="Architectural spotlight detail"
           caption="Custom Installation"
           className="right-[4%] md:right-[6%] top-[50%] w-[76px] sm:w-[96px] md:w-[140px] aspect-[4/5]"
