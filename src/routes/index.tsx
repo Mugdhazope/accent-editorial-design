@@ -259,7 +259,7 @@ function Hero() {
           src={float1.url}
           alt="Architectural wall light"
           caption="Mumbai, India"
-          className="left-[4%] md:left-[8%] top-[12%] w-[120px] sm:w-[160px] md:w-[220px] aspect-[3/2] grayscale"
+          className="left-[3%] md:left-[8%] top-[20%] md:top-[12%] w-[88px] sm:w-[140px] md:w-[220px] aspect-[3/2] grayscale"
           glowClass="bg-[radial-gradient(closest-side,rgba(255,236,180,0.35),transparent)]"
           scrollY={mv(yLeftScroll)}
           floatY={floatLeft}
@@ -274,7 +274,7 @@ function Hero() {
           src={heroLighting.url}
           alt="Luxury lobby lighting installation"
           caption="Hospitality Project"
-          className="left-1/2 -translate-x-1/2 top-[2%] w-[220px] sm:w-[300px] md:w-[440px] aspect-[3/2]"
+          className="left-1/2 -translate-x-1/2 top-[2%] w-[180px] sm:w-[260px] md:w-[440px] aspect-[3/2]"
           glowClass="bg-[radial-gradient(closest-side,rgba(200,255,77,0.18),transparent)]"
           scrollY={mv(yCenterScroll)}
           mouseX={mouse.x}
@@ -288,7 +288,7 @@ function Hero() {
           src={float2.url}
           alt="Architectural spotlight detail"
           caption="Custom Installation"
-          className="right-[4%] md:right-[6%] top-[50%] w-[110px] sm:w-[140px] md:w-[200px] aspect-[3/2]"
+          className="right-[3%] md:right-[6%] top-[55%] md:top-[50%] w-[88px] sm:w-[130px] md:w-[200px] aspect-[3/2]"
           glowClass="bg-[radial-gradient(closest-side,rgba(255,220,150,0.3),transparent)]"
           scrollY={mv(yRightScroll)}
           floatY={floatRight}
@@ -302,7 +302,7 @@ function Hero() {
       </div>
 
       <motion.h1
-        className="font-sans font-black lowercase leading-[0.82] tracking-[-0.05em] text-center px-2 -mt-6 md:-mt-20"
+        className="font-sans font-black lowercase leading-[0.82] tracking-[-0.05em] text-center px-2 -mt-16 md:-mt-40"
         style={{ fontSize: "clamp(72px, 26vw, 460px)", scale, transformOrigin: "50% 50%", willChange: "transform" }}
       >
         about us
