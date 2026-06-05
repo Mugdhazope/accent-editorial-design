@@ -302,7 +302,7 @@ function Hero() {
       </div>
 
       <motion.h1
-        className="font-sans font-black lowercase leading-[0.82] tracking-[-0.05em] text-center px-2 -mt-6 md:-mt-20"
+        className="font-sans font-black lowercase leading-[0.82] tracking-[-0.05em] text-center px-2 -mt-16 md:-mt-40"
         style={{ fontSize: "clamp(72px, 26vw, 460px)", scale, transformOrigin: "50% 50%", willChange: "transform" }}
       >
         about us
