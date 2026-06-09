@@ -559,22 +559,21 @@ function AboutPage() {
             <div>
               <div className={`${serif} text-accent text-sm mb-3`}>01 — studio</div>
               <p className="text-foreground/80 leading-[1.6]">
-                Plevid Group<br />
-                Lower Parel<br />
-                Mumbai 400013, India
+                Enam Sambhav, C - 20, G Block Rd<br />
+                G Block BKC, Bandra Kurla Complex<br />
+                Bandra East, Mumbai, Maharashtra 400051
               </p>
             </div>
             <div>
               <div className={`${serif} text-accent text-sm mb-3`}>02 — enquiries</div>
               <p className="text-foreground/80 leading-[1.6]">
-                <a href="mailto:hello@plevid.com" className="hover:text-accent transition-colors">hello@plevid.com</a><br />
-                <a href="mailto:projects@plevid.com" className="hover:text-accent transition-colors">projects@plevid.com</a>
+                <a href="mailto:contact@plevid.com" className="hover:text-accent transition-colors">contact@plevid.com</a>
               </p>
             </div>
             <div>
               <div className={`${serif} text-accent text-sm mb-3`}>03 — direct</div>
               <p className="text-foreground/80 leading-[1.6]">
-                <a href="tel:+912240000000" className="hover:text-accent transition-colors">+91 22 4000 0000</a><br />
+                <a href="tel:+918828181288" className="hover:text-accent transition-colors">+91 88281 81288</a><br />
                 Mon — Sat, 10:00 — 19:00 IST
               </p>
             </div>
