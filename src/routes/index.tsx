@@ -7,9 +7,9 @@ import {
   useReducedMotion,
   type MotionValue,
 } from "framer-motion";
-import heroLighting from "@/assets/Middle Image.png";
-import float1 from "@/assets/Left one.JPG.jpeg";
-import float2 from "@/assets/Right one.JPG.jpeg";
+import heroLighting from "@/assets/hero-middle.png";
+import float1 from "@/assets/hero-left.png";
+import float2 from "@/assets/hero-right.png";
 import plevidLogo from "@/assets/plevid-logo.png";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -285,7 +285,7 @@ function HeroImages() {
         <HeroImage
           src={float1}
           alt="Architectural wall light"
-          caption="Mumbai, India"
+          caption=""
           className="left-[3%] md:left-[8%] top-[20%] md:top-[12%] w-[88px] sm:w-[140px] md:w-[220px] aspect-[3/2] grayscale"
           glowClass="bg-[radial-gradient(closest-side,rgba(255,236,180,0.35),transparent)]"
           scrollY={yLeftScroll}
@@ -300,7 +300,7 @@ function HeroImages() {
         <HeroImage
           src={heroLighting}
           alt="Luxury lobby lighting installation"
-          caption="Hospitality Project"
+          caption=""
           className="left-1/2 -translate-x-1/2 top-[2%] w-[180px] sm:w-[260px] md:w-[440px] aspect-[3/2]"
           glowClass="bg-[radial-gradient(closest-side,rgba(200,255,77,0.18),transparent)]"
           scrollY={yCenterScroll}
@@ -314,7 +314,7 @@ function HeroImages() {
         <HeroImage
           src={float2}
           alt="Architectural spotlight detail"
-          caption="Custom Installation"
+          caption=""
           className="right-[3%] md:right-[6%] top-[55%] md:top-[50%] w-[88px] sm:w-[130px] md:w-[200px] aspect-[3/2]"
           glowClass="bg-[radial-gradient(closest-side,rgba(255,220,150,0.3),transparent)]"
           scrollY={yRightScroll}
