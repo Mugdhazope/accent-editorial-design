@@ -11,6 +11,7 @@ import heroLighting from "@/assets/hero-lighting.jpg";
 import float1 from "@/assets/float-1.jpg";
 import float2 from "@/assets/float-2.jpg";
 import plevidLogo from "@/assets/plevid-logo.png";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -35,6 +36,18 @@ export const Route = createFileRoute("/")({
 const serif = "font-serif italic";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+function useLiteMotion() {
+  const reduce = useReducedMotion();
+  const isMobile = useIsMobile();
+  const [coarse, setCoarse] = useState(false);
+
+  useEffect(() => {
+    setCoarse(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
+  return !!reduce || isMobile || coarse;
+}
+
 const steps = [
   { n: "01", title: "research", side: "left", top: "6%", text: "We analyse architectural requirements, user behaviour, project goals, and environmental conditions to establish the ideal lighting strategy." },
   { n: "02", title: "design concept", side: "right", top: "22%", text: "We develop lighting concepts that align with architectural intent, functionality, sustainability, and visual impact." },
@@ -52,8 +65,20 @@ const why = [
 ];
 
 function Reveal({ children, className, delay = 0, y = 30 }: { children: ReactNode; className?: string; delay?: number; y?: number }) {
-  const reduce = useReducedMotion();
-  if (reduce) return <div className={className}>{children}</div>;
+  const lite = useLiteMotion();
+  if (lite) {
+    return (
+      <motion.div
+        className={className}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.45, ease: "easeOut", delay }}
+      >
+        {children}
+      </motion.div>
+    );
+  }
   return (
     <motion.div
       className={className}
@@ -131,87 +156,96 @@ type HeroImageProps = {
   className: string;
   glowClass: string;
   scrollY: MotionValue<number> | number;
-  floatY?: number;
+  floatClass?: string;
   mouseX: number;
   mouseY: number;
   parallaxStrength: number;
   reveal: { delay: number };
-  reduce: boolean;
+  lite: boolean;
   captionAlign?: "left" | "right";
 };
 
 function HeroImage({
-  src, alt, caption, className, glowClass, scrollY, floatY = 0,
-  mouseX, mouseY, parallaxStrength, reveal, reduce, captionAlign = "left",
+  src, alt, caption, className, glowClass, scrollY, floatClass,
+  mouseX, mouseY, parallaxStrength, reveal, lite, captionAlign = "left",
 }: HeroImageProps) {
-  const px = reduce ? 0 : mouseX * parallaxStrength;
-  const py = reduce ? 0 : mouseY * parallaxStrength;
-  return (
-    <motion.figure
-      className={`absolute group ${className}`}
-      style={{
-        y: scrollY,
-        translateY: floatY,
-        willChange: "transform",
-      }}
-      initial={reduce ? false : { opacity: 0, y: 18 }}
-      animate={reduce ? undefined : { opacity: 1, y: 0 }}
-      transition={{ duration: 1.1, ease: EASE, delay: reveal.delay }}
-    >
-      <motion.div
-        className="relative w-full h-full"
-        style={{ x: px, y: py }}
-        transition={{ type: "spring", stiffness: 60, damping: 20 }}
-      >
-        {/* Soft glow behind */}
+  const px = lite ? 0 : mouseX * parallaxStrength;
+  const py = lite ? 0 : mouseY * parallaxStrength;
+  const innerClass = `relative w-full h-full${floatClass ? ` ${floatClass}` : ""}`;
+  const inner = (
+    <>
+      {!lite && (
         <div
           aria-hidden
           className={`absolute -inset-8 md:-inset-12 rounded-full blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-700 ${glowClass}`}
         />
-        {/* Shadow layer */}
-        <div
-          aria-hidden
-          className="absolute inset-0 translate-y-3 blur-xl bg-black/60 -z-[1]"
+      )}
+      <div
+        aria-hidden
+        className={`absolute inset-0 translate-y-3 bg-black/60 -z-[1] ${lite ? "opacity-50" : "blur-xl"}`}
+      />
+      <div className="relative overflow-hidden w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.03]">
+        <img
+          src={src}
+          alt={alt}
+          loading="eager"
+          decoding="async"
+          className="block w-full h-full object-cover transition-[filter] duration-700 ease-out group-hover:brightness-110 group-hover:contrast-105"
         />
-        {/* Image wrapper */}
-        <div className="relative overflow-hidden w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.03]">
-          <img
-            src={src}
-            alt={alt}
-            className="block w-full h-full object-cover transition-[filter] duration-700 ease-out group-hover:brightness-110 group-hover:contrast-105"
-          />
-          {/* Grain overlay */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-[0.12] mix-blend-overlay"
-            style={{
-              backgroundImage:
-                "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
-              backgroundSize: "160px 160px",
-            }}
-          />
-          {/* Floating light reflection */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -inset-y-1/4 -left-1/3 w-1/2 rotate-12 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%)",
-              animation: reduce ? undefined : "heroSheen 9s ease-in-out infinite",
-            }}
-          />
-          {/* Always-on subtle sheen */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.04) 50%, transparent 60%)",
-              animation: reduce ? undefined : "heroSheen 14s ease-in-out infinite",
-            }}
-          />
-        </div>
-      </motion.div>
+        {!lite && (
+          <>
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.12] mix-blend-overlay"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+                backgroundSize: "160px 160px",
+              }}
+            />
+            <div
+              aria-hidden
+              className="hero-sheen pointer-events-none absolute -inset-y-1/4 -left-1/3 w-1/2 rotate-12 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%)",
+                animation: "heroSheen 9s ease-in-out infinite",
+              }}
+            />
+            <div
+              aria-hidden
+              className="hero-sheen pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.04) 50%, transparent 60%)",
+                animation: "heroSheen 14s ease-in-out infinite",
+              }}
+            />
+          </>
+        )}
+      </div>
+    </>
+  );
+
+  return (
+    <motion.figure
+      className={`absolute group ${className}`}
+      style={lite ? undefined : { y: scrollY, willChange: "transform" }}
+      initial={lite ? { opacity: 0 } : { opacity: 0, y: 18 }}
+      animate={lite ? { opacity: 1 } : { opacity: 1, y: 0 }}
+      transition={{ duration: lite ? 0.6 : 1.1, ease: EASE, delay: reveal.delay }}
+    >
+      {lite ? (
+        <div className={innerClass}>{inner}</div>
+      ) : (
+        <motion.div
+          className={innerClass}
+          style={{ x: px, y: py }}
+          transition={{ type: "spring", stiffness: 60, damping: 20 }}
+        >
+          {inner}
+        </motion.div>
+      )}
       <figcaption
         className={`mt-3 ${serif} text-[10px] md:text-[11px] tracking-wide text-foreground/45 ${
           captionAlign === "right" ? "text-right" : "text-left"
@@ -223,39 +257,12 @@ function HeroImage({
   );
 }
 
-function Hero() {
+function HeroImages() {
   const ref = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
-  const titleScale = useTransform(scrollYProgress, [0.15, 0.5], [0.68, 1], { clamp: true });
-  const yLeftScroll = useTransform(scrollYProgress, [0, 1], [0, 140]);
-  const yCenterScroll = useTransform(scrollYProgress, [0, 1], [0, 60]);
-  const yRightScroll = useTransform(scrollYProgress, [0, 1], [0, 160]);
-
-  // Slow floating motion (side images only)
-  const [tFloat, setTFloat] = useState(0);
   useEffect(() => {
-    if (reduce) return;
-    let raf = 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      setTFloat((now - start) / 1000);
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [reduce]);
-
-  const floatLeft = reduce ? 0 : Math.sin(tFloat * 0.5) * 8;
-  const floatRight = reduce ? 0 : Math.sin(tFloat * 0.4 + 1.7) * 10;
-
-  // Mouse-based micro parallax (normalized -0.5..0.5)
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  useEffect(() => {
-    if (reduce) return;
-    if (typeof window === "undefined") return;
-    if (window.matchMedia("(pointer: coarse)").matches) return;
     const el = ref.current;
     if (!el) return;
     const onMove = (e: MouseEvent) => {
@@ -266,10 +273,11 @@ function Hero() {
     };
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
-  }, [reduce]);
-
-  const mv = (v: MotionValue<number>) => (reduce ? 0 : (v as MotionValue<number> | number));
-  const scale = reduce ? 1 : titleScale;
+  }, []);
+  const titleScale = useTransform(scrollYProgress, [0.15, 0.5], [0.68, 1], { clamp: true });
+  const yLeftScroll = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const yCenterScroll = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const yRightScroll = useTransform(scrollYProgress, [0, 1], [0, 160]);
 
   return (
     <section ref={ref} id="about" className="relative pt-28 md:pt-36 pb-8">
@@ -280,13 +288,13 @@ function Hero() {
           caption="Mumbai, India"
           className="left-[3%] md:left-[8%] top-[20%] md:top-[12%] w-[88px] sm:w-[140px] md:w-[220px] aspect-[3/2] grayscale"
           glowClass="bg-[radial-gradient(closest-side,rgba(255,236,180,0.35),transparent)]"
-          scrollY={mv(yLeftScroll)}
-          floatY={floatLeft}
+          scrollY={yLeftScroll}
+          floatClass="hero-float-a"
           mouseX={mouse.x}
           mouseY={mouse.y}
           parallaxStrength={6}
           reveal={{ delay: 0.05 }}
-          reduce={!!reduce}
+          lite={false}
           captionAlign="left"
         />
         <HeroImage
@@ -295,12 +303,12 @@ function Hero() {
           caption="Hospitality Project"
           className="left-1/2 -translate-x-1/2 top-[2%] w-[180px] sm:w-[260px] md:w-[440px] aspect-[3/2]"
           glowClass="bg-[radial-gradient(closest-side,rgba(200,255,77,0.18),transparent)]"
-          scrollY={mv(yCenterScroll)}
+          scrollY={yCenterScroll}
           mouseX={mouse.x}
           mouseY={mouse.y}
           parallaxStrength={3}
           reveal={{ delay: 0.25 }}
-          reduce={!!reduce}
+          lite={false}
           captionAlign="left"
         />
         <HeroImage
@@ -309,20 +317,20 @@ function Hero() {
           caption="Custom Installation"
           className="right-[3%] md:right-[6%] top-[55%] md:top-[50%] w-[88px] sm:w-[130px] md:w-[200px] aspect-[3/2]"
           glowClass="bg-[radial-gradient(closest-side,rgba(255,220,150,0.3),transparent)]"
-          scrollY={mv(yRightScroll)}
-          floatY={floatRight}
+          scrollY={yRightScroll}
+          floatClass="hero-float-b"
           mouseX={mouse.x}
           mouseY={mouse.y}
           parallaxStrength={7}
           reveal={{ delay: 0.45 }}
-          reduce={!!reduce}
+          lite={false}
           captionAlign="right"
         />
       </div>
 
       <motion.h1
         className="font-sans font-black lowercase leading-[0.82] tracking-[-0.05em] text-center px-2 -mt-16 md:-mt-40"
-        style={{ fontSize: "clamp(72px, 26vw, 460px)", scale, transformOrigin: "50% 50%", willChange: "transform" }}
+        style={{ fontSize: "clamp(72px, 26vw, 460px)", scale: titleScale, transformOrigin: "50% 50%", willChange: "transform" }}
       >
         about us
       </motion.h1>
@@ -330,12 +338,77 @@ function Hero() {
   );
 }
 
+function HeroLite() {
+  return (
+    <section id="about" className="relative pt-28 md:pt-36 pb-8">
+      <div className="relative mx-auto max-w-[1400px] h-[62vh] min-h-[420px] md:h-[78vh] md:min-h-[600px]">
+        <HeroImage
+          src={float1}
+          alt="Architectural wall light"
+          caption="Mumbai, India"
+          className="left-[3%] md:left-[8%] top-[20%] md:top-[12%] w-[88px] sm:w-[140px] md:w-[220px] aspect-[3/2] grayscale"
+          glowClass=""
+          scrollY={0}
+          floatClass="hero-float-a"
+          mouseX={0}
+          mouseY={0}
+          parallaxStrength={0}
+          reveal={{ delay: 0.05 }}
+          lite
+          captionAlign="left"
+        />
+        <HeroImage
+          src={heroLighting}
+          alt="Luxury lobby lighting installation"
+          caption="Hospitality Project"
+          className="left-1/2 -translate-x-1/2 top-[2%] w-[180px] sm:w-[260px] md:w-[440px] aspect-[3/2]"
+          glowClass=""
+          scrollY={0}
+          mouseX={0}
+          mouseY={0}
+          parallaxStrength={0}
+          reveal={{ delay: 0.25 }}
+          lite
+          captionAlign="left"
+        />
+        <HeroImage
+          src={float2}
+          alt="Architectural spotlight detail"
+          caption="Custom Installation"
+          className="right-[3%] md:right-[6%] top-[55%] md:top-[50%] w-[88px] sm:w-[130px] md:w-[200px] aspect-[3/2]"
+          glowClass=""
+          scrollY={0}
+          floatClass="hero-float-b"
+          mouseX={0}
+          mouseY={0}
+          parallaxStrength={0}
+          reveal={{ delay: 0.45 }}
+          lite
+          captionAlign="right"
+        />
+      </div>
 
-function RevealStatement({ text }: { text: string }) {
+      <h1
+        className="font-sans font-black lowercase leading-[0.82] tracking-[-0.05em] text-center px-2 -mt-16 md:-mt-40"
+        style={{ fontSize: "clamp(72px, 26vw, 460px)" }}
+      >
+        about us
+      </h1>
+    </section>
+  );
+}
+
+function Hero() {
+  const lite = useLiteMotion();
+  return lite ? <HeroLite /> : <HeroImages />;
+}
+
+
+function RevealStatementFull({ text }: { text: string }) {
   const ref = useRef<HTMLHeadingElement>(null);
-  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "start 0.25"] });
   const words = text.split(" ");
+
   return (
     <h2
       ref={ref}
@@ -343,7 +416,7 @@ function RevealStatement({ text }: { text: string }) {
       style={{ fontSize: "clamp(36px, 6vw, 88px)" }}
     >
       {words.map((w, i) => (
-        <Word key={i} progress={scrollYProgress} index={i} total={words.length} reduce={!!reduce}>
+        <Word key={i} progress={scrollYProgress} index={i} total={words.length}>
           {w}
         </Word>
       ))}
@@ -351,12 +424,31 @@ function RevealStatement({ text }: { text: string }) {
   );
 }
 
-function Word({ children, progress, index, total, reduce }: { children: ReactNode; progress: MotionValue<number>; index: number; total: number; reduce: boolean }) {
+function RevealStatement({ text }: { text: string }) {
+  const lite = useLiteMotion();
+
+  if (lite) {
+    return (
+      <Reveal>
+        <h2
+          className="mt-20 mx-auto max-w-[1100px] text-center font-sans font-bold lowercase leading-[1.02] tracking-[-0.025em]"
+          style={{ fontSize: "clamp(36px, 6vw, 88px)" }}
+        >
+          {text}
+        </h2>
+      </Reveal>
+    );
+  }
+
+  return <RevealStatementFull text={text} />;
+}
+
+function Word({ children, progress, index, total }: { children: ReactNode; progress: MotionValue<number>; index: number; total: number }) {
   const start = index / total;
   const end = (index + 1) / total;
   const opacity = useTransform(progress, [start, end], [0.12, 1]);
   return (
-    <motion.span style={{ opacity: reduce ? 1 : opacity }} className="inline-block mr-[0.25em]">
+    <motion.span style={{ opacity }} className="inline-block mr-[0.25em]">
       {children}
     </motion.span>
   );
@@ -456,9 +548,11 @@ function ProcessTimeline() {
 
 
 function AboutPage() {
+  const lite = useLiteMotion();
+
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <CursorLight />
+    <div className={`min-h-screen bg-background text-foreground overflow-x-hidden${lite ? " lite-motion" : ""}`}>
+      {!lite && <CursorLight />}
 
       <header className="fixed top-0 inset-x-0 z-50 px-6 md:px-10 pt-5">
         <div className="flex items-center justify-between">
