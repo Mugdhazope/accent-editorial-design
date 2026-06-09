@@ -1,8 +1,12 @@
 [variables]
 NODE_VERSION = "22"
+NIXPACKS_NODE_ENV = "development"
 
 [phases.install]
-cmds = ["npm ci"]
+cmds = [
+  "npm ci --include=dev",
+  "npm rebuild lightningcss @tailwindcss/oxide",
+]
 
 [phases.build]
 cmds = ["npm run build"]
