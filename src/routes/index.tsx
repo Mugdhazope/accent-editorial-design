@@ -7,9 +7,9 @@ import {
   useReducedMotion,
   type MotionValue,
 } from "framer-motion";
-import heroLighting from "@/assets/hero-lighting.jpg";
-import float1 from "@/assets/float-1.jpg";
-import float2 from "@/assets/float-2.jpg";
+import heroLighting from "@/assets/Middle Image.png";
+import float1 from "@/assets/Left one.JPG.jpeg";
+import float2 from "@/assets/Right one.JPG.jpeg";
 import plevidLogo from "@/assets/plevid-logo.png";
 import { useIsMobile } from "@/hooks/use-mobile";
 
