@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import favicon from "../assets/plevid-logo.png";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -77,16 +78,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "PLEVID" },
+      {
+        name: "description",
+        content:
+          "PLEVID is an architectural lighting collective based in Mumbai, delivering bespoke lighting across India in partnership with leading international brands.",
+      },
+      { name: "author", content: "Plevid Group" },
+      { property: "og:title", content: "PLEVID" },
+      {
+        property: "og:description",
+        content:
+          "Architectural lighting. Global partnerships. Thoughtful execution. Based in Mumbai, lighting across India.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:image", content: favicon },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
+      { rel: "icon", type: "image/png", href: favicon },
+      { rel: "apple-touch-icon", href: favicon },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },

@@ -7,9 +7,9 @@ import {
   useReducedMotion,
   type MotionValue,
 } from "framer-motion";
-import heroLighting from "@/assets/hero-middle.png.asset.json";
-import float1 from "@/assets/hero-left.jpg.asset.json";
-import float2 from "@/assets/hero-right.jpg.asset.json";
+import heroLighting from "@/assets/hero-lighting.jpg";
+import float1 from "@/assets/float-1.jpg";
+import float2 from "@/assets/float-2.jpg";
 import plevidLogo from "@/assets/plevid-logo.png";
 
 export const Route = createFileRoute("/")({
@@ -69,37 +69,56 @@ function Reveal({ children, className, delay = 0, y = 30 }: { children: ReactNod
 
 function CursorLight() {
   const ref = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(false);
+  const SIZE = 560;
+  const HALF = SIZE / 2;
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const el = ref.current;
     if (!el) return;
-    let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
-    let x = tx, y = ty;
+
+    setActive(true);
+    let tx = window.innerWidth / 2;
+    let ty = window.innerHeight / 2;
+    let x = tx;
+    let y = ty;
     let raf = 0;
-    const onMove = (e: MouseEvent) => { tx = e.clientX; ty = e.clientY; };
+    const onMove = (e: MouseEvent) => {
+      tx = e.clientX;
+      ty = e.clientY;
+    };
     const tick = () => {
       x += (tx - x) * 0.12;
       y += (ty - y) * 0.12;
-      el.style.transform = `translate3d(${x - 180}px, ${y - 180}px, 0)`;
+      el.style.transform = `translate3d(${x - HALF}px, ${y - HALF}px, 0)`;
       raf = requestAnimationFrame(tick);
     };
-    el.style.opacity = "1";
     window.addEventListener("mousemove", onMove);
     raf = requestAnimationFrame(tick);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("mousemove", onMove); };
-  }, []);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMove);
+    };
+  }, [HALF]);
+
   return (
     <div
       ref={ref}
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[1] h-[360px] w-[360px] rounded-full opacity-0"
+      className="pointer-events-none fixed left-0 top-0 z-[5] rounded-full"
       style={{
-        background: "radial-gradient(closest-side, #C8FF4D, transparent)",
-        filter: "blur(80px)",
+        width: SIZE,
+        height: SIZE,
+        opacity: active ? 0.38 : 0,
+        background:
+          "radial-gradient(closest-side, rgba(200, 255, 77, 1) 0%, rgba(200, 255, 77, 0.55) 40%, transparent 72%)",
+        filter: "blur(64px)",
         mixBlendMode: "screen",
-        opacity: 0.025,
+        transition: "opacity 0.6s ease",
+        willChange: "transform",
       }}
     />
   );
@@ -256,7 +275,7 @@ function Hero() {
     <section ref={ref} id="about" className="relative pt-28 md:pt-36 pb-8">
       <div className="relative mx-auto max-w-[1400px] h-[62vh] min-h-[420px] md:h-[78vh] md:min-h-[600px]">
         <HeroImage
-          src={float1.url}
+          src={float1}
           alt="Architectural wall light"
           caption="Mumbai, India"
           className="left-[3%] md:left-[8%] top-[20%] md:top-[12%] w-[88px] sm:w-[140px] md:w-[220px] aspect-[3/2] grayscale"
@@ -271,7 +290,7 @@ function Hero() {
           captionAlign="left"
         />
         <HeroImage
-          src={heroLighting.url}
+          src={heroLighting}
           alt="Luxury lobby lighting installation"
           caption="Hospitality Project"
           className="left-1/2 -translate-x-1/2 top-[2%] w-[180px] sm:w-[260px] md:w-[440px] aspect-[3/2]"
@@ -285,7 +304,7 @@ function Hero() {
           captionAlign="left"
         />
         <HeroImage
-          src={float2.url}
+          src={float2}
           alt="Architectural spotlight detail"
           caption="Custom Installation"
           className="right-[3%] md:right-[6%] top-[55%] md:top-[50%] w-[88px] sm:w-[130px] md:w-[200px] aspect-[3/2]"
