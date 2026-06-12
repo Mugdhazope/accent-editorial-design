@@ -286,7 +286,7 @@ function HeroImages() {
           src={float1}
           alt="Architectural wall light"
           caption=""
-          className="left-[3%] md:left-[8%] top-[20%] md:top-[12%] w-[88px] sm:w-[140px] md:w-[220px] aspect-[3/2] grayscale"
+          className="left-[1%] md:left-[1%] top-[16%] md:top-[3%] w-[90px] sm:w-[150px] md:w-[260px] aspect-[3/4] grayscale"
           glowClass="bg-[radial-gradient(closest-side,rgba(255,236,180,0.35),transparent)]"
           scrollY={yLeftScroll}
           floatClass="hero-float-a"
@@ -301,7 +301,7 @@ function HeroImages() {
           src={heroLighting}
           alt="Luxury lobby lighting installation"
           caption=""
-          className="left-1/2 -translate-x-1/2 top-[2%] w-[180px] sm:w-[260px] md:w-[440px] aspect-[3/2]"
+          className="left-1/2 -translate-x-1/2 top-[10%] md:top-[15%] w-[220px] sm:w-[340px] md:w-[720px] aspect-[3/2]"
           glowClass="bg-[radial-gradient(closest-side,rgba(200,255,77,0.18),transparent)]"
           scrollY={yCenterScroll}
           mouseX={mouse.x}
@@ -315,7 +315,7 @@ function HeroImages() {
           src={float2}
           alt="Architectural spotlight detail"
           caption=""
-          className="right-[3%] md:right-[6%] top-[55%] md:top-[50%] w-[88px] sm:w-[130px] md:w-[200px] aspect-[3/2]"
+          className="right-[1%] md:right-[1%] top-[50%] md:top-[45%] w-[90px] sm:w-[150px] md:w-[260px] aspect-[3/4]"
           glowClass="bg-[radial-gradient(closest-side,rgba(255,220,150,0.3),transparent)]"
           scrollY={yRightScroll}
           floatClass="hero-float-b"
@@ -346,7 +346,7 @@ function HeroLite() {
           src={float1}
           alt="Architectural wall light"
           caption="Mumbai, India"
-          className="left-[3%] md:left-[8%] top-[20%] md:top-[12%] w-[88px] sm:w-[140px] md:w-[220px] aspect-[3/2] grayscale"
+          className="left-[1%] md:left-[1%] top-[10%] md:top-[3%] w-[90px] sm:w-[150px] md:w-[260px] aspect-[3/4] grayscale"
           glowClass=""
           scrollY={0}
           floatClass="hero-float-a"
@@ -361,7 +361,7 @@ function HeroLite() {
           src={heroLighting}
           alt="Luxury lobby lighting installation"
           caption="Hospitality Project"
-          className="left-1/2 -translate-x-1/2 top-[2%] w-[180px] sm:w-[260px] md:w-[440px] aspect-[3/2]"
+          className="left-1/2 -translate-x-1/2 top-[10%] md:top-[10%] w-[220px] sm:w-[340px] md:w-[720px] aspect-[3/2]"
           glowClass=""
           scrollY={0}
           mouseX={0}
@@ -375,7 +375,7 @@ function HeroLite() {
           src={float2}
           alt="Architectural spotlight detail"
           caption="Custom Installation"
-          className="right-[3%] md:right-[6%] top-[55%] md:top-[50%] w-[88px] sm:w-[130px] md:w-[200px] aspect-[3/2]"
+          className="right-[1%] md:right-[1%] top-[50%] md:top-[45%] w-[90px] sm:w-[150px] md:w-[260px] aspect-[3/4]"
           glowClass=""
           scrollY={0}
           floatClass="hero-float-b"
