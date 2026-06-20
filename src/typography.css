@@ -1,0 +1,185 @@
+/**
+ * Plevid shared typography
+ * Import this file on every page / project for consistent fonts.
+ *
+ * Usage:
+ *   @import "../../shared/typography.css";   (adjust path per project)
+ *   or <link rel="stylesheet" href="../shared/typography.css">
+ *
+ * Also add font loading to your HTML <head> (see shared/TYPOGRAPHY.md).
+ *
+ * See shared/TYPOGRAPHY.md for full token reference.
+ */
+
+:root {
+  /* ── Font families ── */
+  --plevid-font-sans: "Inter Tight", system-ui, sans-serif;
+  --plevid-font-serif: "Instrument Serif", Georgia, serif;
+
+  /* Convenience aliases (use in plain CSS) */
+  --font-sans: var(--plevid-font-sans);
+  --font-serif: var(--plevid-font-serif);
+
+  /* ── Font weights ── */
+  --plevid-weight-regular: 400;
+  --plevid-weight-medium: 500;
+  --plevid-weight-bold: 700;
+  --plevid-weight-black: 900;
+
+  /* ── Line heights ── */
+  --plevid-leading-none: 1;
+  --plevid-leading-tight: 0.82;
+  --plevid-leading-snug: 0.88;
+  --plevid-leading-display: 0.9;
+  --plevid-leading-heading: 1.02;
+  --plevid-leading-normal: 1.2;
+  --plevid-leading-body: 1.55;
+  --plevid-leading-relaxed: 1.6;
+
+  /* ── Letter spacing ── */
+  --plevid-tracking-tighter: -0.05em;
+  --plevid-tracking-tight: -0.045em;
+  --plevid-tracking-display: -0.04em;
+  --plevid-tracking-heading: -0.025em;
+  --plevid-tracking-normal: 0;
+  --plevid-tracking-wide: 0.025em;
+
+  /* ── Static font sizes ── */
+  --plevid-text-2xs: 10px;
+  --plevid-text-xs: 12px;
+  --plevid-text-sm: 13px;
+  --plevid-text-base: 14px;
+  --plevid-text-md: 16px;
+  --plevid-text-lg: 18px;
+  --plevid-text-xl: 20px;
+  --plevid-text-2xl: 24px;
+  --plevid-text-3xl: 34px;
+
+  /* ── Fluid display sizes ── */
+  --plevid-text-display-hero: clamp(72px, 26vw, 460px);
+  --plevid-text-display-statement: clamp(36px, 6vw, 88px);
+  --plevid-text-display-section: clamp(56px, 12vw, 180px);
+  --plevid-text-display-emphasis: clamp(52px, 13vw, 220px);
+  --plevid-text-display-footer: clamp(48px, 10vw, 140px);
+}
+
+/* ── Base ── */
+html,
+body {
+  font-family: var(--plevid-font-sans);
+  font-weight: var(--plevid-weight-regular);
+  line-height: var(--plevid-leading-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Family utilities ── */
+.plevid-font-sans,
+.font-sans {
+  font-family: var(--plevid-font-sans);
+}
+
+.plevid-font-serif,
+.font-serif {
+  font-family: var(--plevid-font-serif);
+}
+
+/* ── Weight utilities ── */
+.plevid-weight-regular { font-weight: var(--plevid-weight-regular); }
+.plevid-weight-medium  { font-weight: var(--plevid-weight-medium); }
+.plevid-weight-bold    { font-weight: var(--plevid-weight-bold); }
+.plevid-weight-black   { font-weight: var(--plevid-weight-black); }
+
+/* ── Line-height utilities ── */
+.plevid-leading-tight    { line-height: var(--plevid-leading-tight); }
+.plevid-leading-snug     { line-height: var(--plevid-leading-snug); }
+.plevid-leading-display  { line-height: var(--plevid-leading-display); }
+.plevid-leading-heading  { line-height: var(--plevid-leading-heading); }
+.plevid-leading-body     { line-height: var(--plevid-leading-body); }
+.plevid-leading-relaxed  { line-height: var(--plevid-leading-relaxed); }
+
+/* ── Letter-spacing utilities ── */
+.plevid-tracking-tighter { letter-spacing: var(--plevid-tracking-tighter); }
+.plevid-tracking-tight   { letter-spacing: var(--plevid-tracking-tight); }
+.plevid-tracking-display { letter-spacing: var(--plevid-tracking-display); }
+.plevid-tracking-heading { letter-spacing: var(--plevid-tracking-heading); }
+
+/* ── Display text presets (editorial) ── */
+.plevid-text-hero {
+  font-family: var(--plevid-font-sans);
+  font-size: var(--plevid-text-display-hero);
+  font-weight: var(--plevid-weight-black);
+  line-height: var(--plevid-leading-tight);
+  letter-spacing: var(--plevid-tracking-tighter);
+  text-transform: lowercase;
+}
+
+.plevid-text-statement {
+  font-family: var(--plevid-font-sans);
+  font-size: var(--plevid-text-display-statement);
+  font-weight: var(--plevid-weight-bold);
+  line-height: var(--plevid-leading-heading);
+  letter-spacing: var(--plevid-tracking-heading);
+  text-transform: lowercase;
+}
+
+.plevid-text-section {
+  font-family: var(--plevid-font-sans);
+  font-size: var(--plevid-text-display-section);
+  font-weight: var(--plevid-weight-black);
+  line-height: var(--plevid-leading-display);
+  letter-spacing: var(--plevid-tracking-display);
+  text-transform: lowercase;
+}
+
+.plevid-text-emphasis {
+  font-family: var(--plevid-font-sans);
+  font-size: var(--plevid-text-display-emphasis);
+  font-weight: var(--plevid-weight-black);
+  line-height: var(--plevid-leading-snug);
+  letter-spacing: var(--plevid-tracking-tight);
+  text-transform: lowercase;
+}
+
+.plevid-text-footer-display {
+  font-family: var(--plevid-font-sans);
+  font-size: var(--plevid-text-display-footer);
+  font-weight: var(--plevid-weight-black);
+  line-height: var(--plevid-leading-display);
+  letter-spacing: var(--plevid-tracking-display);
+  text-transform: lowercase;
+}
+
+/* ── Serif accent (labels, numbers, editorial details) ── */
+.plevid-text-serif-accent {
+  font-family: var(--plevid-font-serif);
+  font-style: italic;
+}
+
+.plevid-text-body {
+  font-family: var(--plevid-font-sans);
+  font-size: var(--plevid-text-base);
+  font-weight: var(--plevid-weight-regular);
+  line-height: var(--plevid-leading-body);
+}
+
+.plevid-text-caption {
+  font-family: var(--plevid-font-sans);
+  font-size: var(--plevid-text-xs);
+  font-weight: var(--plevid-weight-medium);
+  line-height: var(--plevid-leading-normal);
+}
+
+.plevid-text-label {
+  font-family: var(--plevid-font-sans);
+  font-size: var(--plevid-text-sm);
+  font-weight: var(--plevid-weight-regular);
+  line-height: var(--plevid-leading-normal);
+}
+
+.plevid-text-ui {
+  font-family: var(--plevid-font-sans);
+  font-size: var(--plevid-text-base);
+  font-weight: var(--plevid-weight-medium);
+  line-height: var(--plevid-leading-normal);
+}
