@@ -280,7 +280,7 @@ function HeroImages() {
   const yRightScroll = useTransform(scrollYProgress, [0, 1], [0, 160]);
 
   return (
-    <section ref={ref} id="about" className="relative pt-28 md:pt-36 pb-8">
+    <section ref={ref} id="about" className="relative pt-32 md:pt-40 pb-8">
       <div className="relative mx-auto max-w-[1400px] h-[62vh] min-h-[420px] md:h-[78vh] md:min-h-[600px]">
         <HeroImage
           src={float1}
@@ -340,7 +340,7 @@ function HeroImages() {
 
 function HeroLite() {
   return (
-    <section id="about" className="relative pt-28 md:pt-36 pb-8">
+    <section id="about" className="relative pt-32 md:pt-40 pb-8">
       <div className="relative mx-auto max-w-[1400px] h-[62vh] min-h-[420px] md:h-[78vh] md:min-h-[600px]">
         <HeroImage
           src={float1}
@@ -554,7 +554,11 @@ function AboutPage() {
     <div className={`min-h-screen bg-background text-foreground overflow-x-hidden${lite ? " lite-motion" : ""}`}>
       {!lite && <CursorLight />}
 
-      <header className="fixed top-0 inset-x-0 z-50 px-6 md:px-10 pt-5">
+      <header className="fixed top-0 inset-x-0 z-50">
+        <p className="px-6 py-2 text-center text-[11px] md:text-[12px] tracking-wide text-foreground/70 lowercase border-b border-accent/30 bg-background">
+          under maintenance
+        </p>
+        <div className="px-6 md:px-10 pt-5">
         <div className="flex items-center justify-between">
           <img src={plevidLogo} alt="PLEVID" className="h-5 md:h-6 w-auto" />
           <nav className="hidden md:flex items-center gap-8 text-[13px] text-foreground/85">
@@ -571,6 +575,7 @@ function AboutPage() {
           </a>
         </div>
         <div className="mt-4 h-px bg-accent/70" />
+        </div>
       </header>
 
       <Hero />

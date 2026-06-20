@@ -1,3 +1,4 @@
+@import "../../../shared/typography.css";
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -28,8 +29,8 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-sans: "Inter Tight", system-ui, sans-serif;
-  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-sans: var(--plevid-font-sans);
+  --font-serif: var(--plevid-font-serif);
 }
 
 :root {
@@ -65,8 +66,6 @@
   html, body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
   }
 }
 
